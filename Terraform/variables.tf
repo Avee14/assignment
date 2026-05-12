@@ -164,3 +164,12 @@ variable "alert_email" {
   type        = string
   default     = "ops@example.com"
 }
+
+variable "db_admin_username" {
+  type = string
+}
+
+variable "db_admin_password" {
+  type = string
+  sensitive = true
+}

@@ -56,7 +56,6 @@ resource "azurerm_kubernetes_cluster" "main" {
   # Enable Key Vault secrets provider (CSI driver)
   key_vault_secrets_provider {
     secret_rotation_enabled  = true
-    secret_rotation_interval = "2m"
   }
 
   # Enable workload identity (for pods to access Azure resources)
