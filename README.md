@@ -3,7 +3,6 @@
 
 Project structure:
 ```
-.
 terraform/
 │
 ├── main.tf
@@ -51,25 +50,119 @@ terraform/
 ```
 $ cd Terraform
 
-# To format code if any formatting required(managed by terraform itself)
+# Format Terraform code
+terraform fmt
 
-$ terraform fmt
+# Validate Terraform configuration
+terraform validate
 
-# To Check syntax correctness and it also Validates variable usage
+# Initialize Terraform providers and backend
+terraform init
 
-$ terraform validate 
+# Preview infrastructure changes
+terraform plan
 
-# Initializes the working directory Downloads provider plugins (Azure, AWS, etc.)
+# Provision infrastructure
+terraform apply
 
-$ terraform init
-
-# Shows execution plan. 
-
-$ terraform plan
-
-# Creates infra
-
-terraform apply 
+# Destroy infrastructure
+terraform destroy
 
 ```
 
+## GitOps Deployment
+
+Argo CD is used as the GitOps deployment tool.
+
+Workflow:
+1. Kubernetes manifests are stored in Git
+2. Argo CD continuously monitors the repository
+3. Any manifest changes are automatically synchronized to AKS
+4. Drift detection ensures cluster state consistency
+
+## Security Considerations
+
+- Secrets are stored in Azure Key Vault
+- AKS uses Managed Identity for secure Key Vault access
+- No hardcoded credentials are stored in Git
+- Terraform remote state is centrally managed
+- Kubernetes secrets are dynamically injected using CSI Driver
+
+## Monitoring & Observability
+
+The solution includes:
+- Azure Monitor integration
+- Log Analytics Workspace
+- Spring Boot Actuator health probes
+- Kubernetes liveness and readiness probes
+
+## Architecture Overview
+
+                                      ┌───────────────────────┐
+                                      │      GitHub Repo      │
+                                      │ Terraform + K8s YAMLs │
+                                      └──────────┬────────────┘
+                                                 │
+                                                 │ GitOps Sync
+                                                 ▼
+                                      ┌───────────────────────┐
+                                      │       Argo CD         │
+                                      │   (Running in AKS)    │
+                                      └──────────┬────────────┘
+                                                 │
+                                                 ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          Azure Kubernetes Service (AKS)                    │
+│                                                                             │
+│  ┌───────────────────────────────────────────────────────────────────────┐  │
+│  │                    Spring Boot Application Pod                       │  │
+│  │                                                                       │  │
+│  │  - Liveness & Readiness Probes                                       │  │
+│  │  - Resource Limits                                                    │  │
+│  │  - Environment Variables from Secrets                                │  │
+│  └──────────────────────────────┬────────────────────────────────────────┘  │
+│                                 │                                           │
+│                                 ▼                                           │
+│                 ┌────────────────────────────────┐                          │
+│                 │ Secrets Store CSI Driver       │                          │
+│                 │ Azure Key Vault Integration    │                          │
+│                 └────────────────┬───────────────┘                          │
+│                                  │                                          │
+└──────────────────────────────────┼──────────────────────────────────────────┘
+                                   │
+                                   ▼
+                    ┌────────────────────────────────┐
+                    │       Azure Key Vault          │
+                    │                                │
+                    │  - DB URL                      │
+                    │  - DB Username                 │
+                    │  - DB Password                 │
+                    └────────────────┬───────────────┘
+                                     │
+                                     ▼
+                    ┌────────────────────────────────┐
+                    │ Azure PostgreSQL Flexible DB   │
+                    │                                │
+                    │  Managed PostgreSQL Backend    │
+                    └────────────────────────────────┘
+
+
+                    ┌────────────────────────────────┐
+                    │ Azure Container Registry (ACR) │
+                    │                                │
+                    │  Spring Boot Docker Images     │
+                    └────────────────┬───────────────┘
+                                     ▲
+                                     │
+                           Docker Build & Push
+                                     │
+                           ┌──────────────────┐
+                           │ Developer / VM   │
+                           └──────────────────┘
+
+
+                    ┌────────────────────────────────┐
+                    │ Azure Monitor & Log Analytics  │
+                    │                                │
+                    │  Logs, Metrics & Monitoring    │
+                    └────────────────────────────────┘
