@@ -138,4 +138,4 @@ These alerts can be implemented using Azure Monitor Metric Alerts and Log-based 
 
 ## Architecture Overview
 
-![Application Architecture](./architecture.png)
+![Application Architecture](./ArchitectureDiagram.png)
