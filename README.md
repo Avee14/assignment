@@ -91,9 +91,49 @@ Workflow:
 ## Monitoring & Observability
 
 The solution includes:
-- Azure Monitor integration
-- Log Analytics Workspace
-- Spring Boot Actuator health probes
-- Kubernetes liveness and readiness probes
+Azure Monitor – Centralized monitoring for AKS and infrastructure
+Log Analytics Workspace – Aggregates logs from AKS and workloads
+Azure Application Insights – Application-level telemetry and tracing
+Spring Boot Actuator – Exposes health and metrics endpoints
+Kubernetes Probes – Liveness and readiness checks for containers
+Azure Key Vault + CSI Driver – Secure injection of telemetry configuration
+
+```
+Spring Boot Application
+        │
+        │ (Actuator endpoints: /health, /metrics)
+        ▼
+Kubernetes Probes (Liveness & Readiness)
+        │
+        ▼
+Azure Monitor (AKS Insights)
+        │
+        ├── Logs → Log Analytics Workspace
+        │
+        └── Metrics → Cluster & Node monitoring
+
+Application Telemetry
+        │
+        ▼
+Azure Application Insights
+        │
+        ├── Request tracking
+        ├── Exception tracking
+        └── Performance metrics
+
+```
+
+Alerts & Notifications (Planned Enhancement)
+
+Azure Monitor alerts can be configured to enable proactive monitoring of the application and infrastructure. As a future enhancement, alerting can be added for the following scenarios:
+
+Pod restarts or crash loops exceeding threshold
+Liveness or readiness probe failures
+High CPU or memory usage on AKS nodes
+HTTP 5xx error spikes or increased latency
+Error patterns or exceptions detected in application logs via Log Analytics
+Database connectivity or authentication failures
+
+These alerts can be implemented using Azure Monitor Metric Alerts and Log-based Alerts, and integrated with Action Groups for notifications via email, webhook, or external tools.
 
 ## Architecture Overview
