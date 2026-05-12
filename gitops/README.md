@@ -4,8 +4,7 @@ kubectl create namespace argocd
 
 2. Then install argocd using below Yaml
 
-kubectl apply -n argocd \
-  -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
 3. If required we can also initialize the ArgoCD service in kubernetes as a LoadBalancer service.
 
