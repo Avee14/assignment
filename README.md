@@ -76,6 +76,33 @@ terraform apply
 
 ```
 
+## Manual Secret Creation
+
+Before deploying the main infrastructure, create the PostgreSQL admin password secret in Azure Key Vault.
+
+### Login to Azure
+
+```
+az login
+```
+
+### Create PostgreSQL Password Secret
+
+```
+az keyvault secret set \
+  --vault-name <keyvault-name> \
+  --name db-password \
+  --value <strong-password>
+```
+
+
+```
+az keyvault secret set \
+  --vault-name spring-app-dev-kv \
+  --name db-password \
+  --value StrongPassword@123
+```
+
 ## Go to the VM where terraform is installed and go into terraform directory
 
 ```
