@@ -1,5 +1,5 @@
 data "azurerm_key_vault_secret" "postgres_password" {
-  name         = "postgres-admin-password"
+  name         = "db-password"
   key_vault_id = var.key_vault_id
 }
 

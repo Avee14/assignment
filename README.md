@@ -3,6 +3,13 @@
 
 Project structure:
 ```
+
+bootstrap/
+│
+├── main.tf
+├── variables.tf
+├── outputs.tf
+
 terraform/
 │
 ├── main.tf
@@ -44,6 +51,31 @@ terraform/
         ├── outputs.tf
 
 ```
+## Terraform Backend Bootstrap
+
+A separate `bootstrap/` Terraform configuration is included to provision the remote backend infrastructure required for Terraform state management.
+
+The bootstrap configuration creates:
+- Azure Resource Group
+- Azure Storage Account
+- Azure Blob Storage Container
+
+These resources are used for:
+- Remote Terraform state storage
+- State locking and collaboration
+- Centralized infrastructure state management
+
+### Bootstrap Deployment
+
+Run the bootstrap configuration first:
+
+```
+cd bootstrap
+terraform init
+terraform apply
+
+```
+
 
 ## Go to the VM where terraform is installed and go into terraform directory
 
