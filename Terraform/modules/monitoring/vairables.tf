@@ -12,3 +12,5 @@ variable "log_retention_days" {
 variable "common_tags" {
   default = {}
 }
+variable "workspace_name" {}
+variable "appinsights_name" {}

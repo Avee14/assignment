@@ -34,3 +34,13 @@ resource "azurerm_key_vault_secret" "db_password" {
   value        = var.db_admin_password
   key_vault_id = azurerm_key_vault.main.id
 }
+
+
+resource "azurerm_key_vault_secret" "appinsights" {
+
+  name         = "appinsights-connection-string"
+
+  value        = module.monitoring.application_insights_connection_string
+
+  key_vault_id = module.keyvault.key_vault_id
+}

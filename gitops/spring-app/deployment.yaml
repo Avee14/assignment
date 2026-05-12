@@ -40,6 +40,11 @@ spec:
                 secretKeyRef:
                   name: postgres-secret
                   key: SPRING_DATASOURCE_PASSWORD
+            - name: APPLICATIONINSIGHTS_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: appinsights-secret
+                  key: APPLICATIONINSIGHTS_CONNECTION_STRING
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness

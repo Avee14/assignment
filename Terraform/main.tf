@@ -26,6 +26,8 @@ module "monitoring" {
   location            = module.resource_group.resource_group_location
   resource_group_name = module.resource_group.resource_group_name
   log_retention_days  = var.log_retention_days
+  workspace_name     = "aks-log-workspace"
+  appinsights_name   = "springboot-appinsights"
 }
 
 module "acr" {
