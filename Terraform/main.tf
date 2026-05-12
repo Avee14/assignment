@@ -61,9 +61,7 @@ module "keyvault" {
   location            = var.location
   resource_group_name = module.resource_group.resource_group_name
   aks_kubelet_object_id = module.aks.kubelet_object_id
-  #key_vault_id = module.keyvault.key_vault_id
   tenant_id = data.azurerm_client_config.current.tenant_id
-  #postgres_fqdn    = module.postgres.postgres_fqdn
   db_admin_username = var.db_admin_username
   db_admin_password = var.db_admin_password
 } 
