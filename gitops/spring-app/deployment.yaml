@@ -17,29 +17,29 @@ spec:
           image: your-acr.azurecr.io/spring-app:v1
           resources:
             requests:
-              memory: "64Mi"
+              memory: "128Mi" 
               cpu: "250m"
             limits:
-              memory: "128Mi"
+              memory: "256Mi"
               cpu: "500m"
           ports:
             - containerPort: 8080
           env:
-          - name: SPRING_DATASOURCE_URL
-            valueFrom:
-              secretKeyRef:
-                name: postgres-secret
-                key: SPRING_DATASOURCE_URL
-          - name: SPRING_DATASOURCE_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: postgres-secret
-                key: SPRING_DATASOURCE_USERNAME
-          - name: SPRING_DATASOURCE_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: postgres-secret
-                key: SPRING_DATASOURCE_PASSWORD
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: SPRING_DATASOURCE_URL
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: SPRING_DATASOURCE_USERNAME
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: SPRING_DATASOURCE_PASSWORD
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
@@ -49,15 +49,15 @@ spec:
             httpGet:
               path: /actuator/health/readiness
               port: 8080
-              initialDelaySeconds: 20
-      volumeMounts:
+            initialDelaySeconds: 20
+          volumeMounts:
+            - name: secrets-store-inline
+              mountPath: "/mnt/secrets-store"
+              readOnly: true
+      volumes:
         - name: secrets-store-inline
-          mountPath: "/mnt/secrets-store"
-          readOnly: true
-    volumes:
-    - name: secrets-store-inline
-      csi:
-        driver: secrets-store.csi.k8s.io
-        readOnly: true
-        volumeAttributes:
-          secretProviderClass: azure-kv
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: azure-kv
