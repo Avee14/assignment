@@ -76,7 +76,6 @@ terraform apply
 
 ```
 
-
 ## Go to the VM where terraform is installed and go into terraform directory
 
 ```
@@ -171,3 +170,11 @@ These alerts can be implemented using Azure Monitor Metric Alerts and Log-based 
 ## Architecture Overview
 
 ![Application Architecture](./ArchitectureDiagram.png)
+
+## Deployment Flow
+
+1. Deploy backend bootstrap infrastructure
+2. Deploy core Azure infrastructure using Terraform
+3. Build and push application image to ACR
+4. Deploy workloads to AKS using ArgoCD
+5. Monitor workloads using Azure Monitor and Application Insights
