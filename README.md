@@ -178,3 +178,12 @@ These alerts can be implemented using Azure Monitor Metric Alerts and Log-based 
 3. Build and push application image to ACR
 4. Deploy workloads to AKS using ArgoCD
 5. Monitor workloads using Azure Monitor and Application Insights
+
+
+## Future Enhancements
+
+- Implement GitHub Actions CI pipeline for automated Docker image build and push to Azure Container Registry (ACR).
+- Automate image tag updates for GitOps deployments.
+- Integrate vulnerability scanning for container images.
+- Add Terraform plan/apply automation with approval gates.
+- Alerting 
