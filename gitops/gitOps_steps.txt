@@ -1,0 +1,17 @@
+1. Once AKS is created, we will create a namespace.
+
+kubectl create namespace argocd
+
+2. Then install argocd using below Yaml
+
+kubectl apply -n argocd \
+  -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+3. If required we can also initialize the ArgoCD service in kubernetes as a LoadBalancer service.
+
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+
+4. Now we will create ArgoCD application Yaml. This will deploy ArgoCD project to keep a watch on our GitHub repo and deploy on K8s.
+

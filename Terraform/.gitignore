@@ -1,0 +1,5 @@
+# Ignore the Terraform directory
+.terraform/
+*.zip
+*.tfstate
+*.tfstate.backup
