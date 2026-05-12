@@ -53,6 +53,33 @@ module "aks" {
   system_node_max_count = var.system_node_max_count
 }
 
+module "keyvault" {
+  source = "./modules/keyvault"
+
+  project             = var.project
+  environment         = var.environment
+  location            = var.location
+  resource_group_name = module.resource_group.resource_group_name
+  aks_kubelet_object_id = module.aks.kubelet_object_id
+  #key_vault_id = module.keyvault.key_vault_id
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  #postgres_fqdn    = module.postgres.postgres_fqdn
+  db_admin_username = var.db_admin_username
+  db_admin_password = var.db_admin_password
+} 
+
+resource "azurerm_key_vault_secret" "db_url" {
+  name         = "db-url"
+  value        = "jdbc:postgresql://${module.postgres.postgres_fqdn}:5432/appdb"
+  key_vault_id = module.keyvault.key_vault_id
+}
+
+resource "azurerm_key_vault_secret" "appinsights" {
+  name         = "appinsights-connection-string"
+  value        = module.monitoring.application_insights_connection_string
+  key_vault_id = module.keyvault.key_vault_id
+}
+
 module "postgres" {
   source = "./modules/postgres"
 
@@ -72,17 +99,3 @@ module "postgres" {
 
 data "azurerm_client_config" "current" {}
 
-module "keyvault" {
-  source = "./modules/keyvault"
-
-  project             = var.project
-  environment         = var.environment
-  location            = var.location
-  resource_group_name = module.resource_group.resource_group_name
-  aks_kubelet_object_id = module.aks.kubelet_object_id
-  key_vault_id = module.keyvault.key_vault_id
-  tenant_id = data.azurerm_client_config.current.tenant_id
-  postgres_fqdn    = module.postgres.postgres_fqdn
-  db_admin_username = var.db_admin_username
-  db_admin_password = var.db_admin_password
-}

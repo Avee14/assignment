@@ -15,14 +15,6 @@ resource "azurerm_role_assignment" "aks_kv_access" {
   principal_id = var.aks_kubelet_object_id
 }
 
-resource "azurerm_key_vault_secret" "db_url" {
-  name = "db-url"
-
-  value = "jdbc:postgresql://${var.postgres_fqdn}:5432/appdb"
-
-  key_vault_id = azurerm_key_vault.main.id
-}
-
 resource "azurerm_key_vault_secret" "db_username" {
   name         = "db-username"
   value        = var.db_admin_username
@@ -33,14 +25,4 @@ resource "azurerm_key_vault_secret" "db_password" {
   name         = "db-password"
   value        = var.db_admin_password
   key_vault_id = azurerm_key_vault.main.id
-}
-
-
-resource "azurerm_key_vault_secret" "appinsights" {
-
-  name         = "appinsights-connection-string"
-
-  value        = module.monitoring.application_insights_connection_string
-
-  key_vault_id = module.keyvault.key_vault_id
 }

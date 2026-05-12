@@ -15,9 +15,3 @@ variable "aks_kubelet_object_id" {
 }
 variable "db_admin_username" {}
 variable "db_admin_password" {}
-variable "postgres_fqdn" {
-  type = string
-}
-variable "key_vault_id" {
-  type = string
-}
