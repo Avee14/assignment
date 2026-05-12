@@ -137,3 +137,5 @@ Database connectivity or authentication failures
 These alerts can be implemented using Azure Monitor Metric Alerts and Log-based Alerts, and integrated with Action Groups for notifications via email, webhook, or external tools.
 
 ## Architecture Overview
+
+![Application Architecture](./architecture.png)
